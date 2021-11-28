@@ -5,6 +5,7 @@
  * Requires PHP: 5.4
  */
 
+require_once 'ApiPost.php';
 require_once 'Settings.php';
 
 new \sd\Settings();
