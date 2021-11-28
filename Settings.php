@@ -21,37 +21,10 @@ class Settings {
 	function content() {
 		$apiPost  = new ApiPost( $this->options );
 		$apiPosts = json_decode( $apiPost->getPosts(), true );
-		?>
-		<h2>Настройки ленты новостей</h2>
-		<form action="options.php" method="post">
-			<?php
-			settings_fields( $this->optionName );
-			do_settings_sections( $this->optionName . 'Page' ); ?>
-			<input name="submit" class="button button-primary" type="submit" value="<?php esc_attr_e( 'Save' ); ?>" />
-		</form>
-		<?php if ( ! empty( $apiPosts ) && is_array( $apiPosts ) ) { ?>
-			<table class="table px-5">
-				<thead>
-				<tr>
-					<th scope="col">Заголовок</th>
-					<th scope="col">Содержимое</th>
-					<th scope="col">Дата создания</th>
-					<th scope="col">Дата обновления</th>
-				</tr>
-				</thead>
-				<tbody>
-				<?php foreach ( $apiPosts as $post ) { ?>
-					<tr>
-						<td><?= $post['title'] ?></td>
-						<td><?= $post['content'] ?></td>
-						<td><?= $post['created_at'] ?></td>
-						<td><?= $post['updated_at'] ?></td>
-					</tr>
-				<?php } ?>
-				</tbody>
-			</table>
-		<?php } ?>
-		<?php
+		require 'template-parts/content/settings.php';
+		if ( ! empty( $apiPosts ) && is_array( $apiPosts ) ) {
+			require 'template-parts/content/table.php';
+		}
 	}
 
 	function pluginRegisterSettings() {
@@ -72,7 +45,7 @@ class Settings {
 	function newsCount() {
 		$fieldName = 'newsCount';
 		$value     = isset( $this->options[ $fieldName ] ) ? esc_attr( $this->options[ $fieldName ] ) : 20;
-		echo "<input id='$fieldName' name='{$this->optionName}[$fieldName]' type='number' min='1' value='$value' />";
+		require 'template-parts/fields/count.php';
 	}
 
 	function newsOrder() {
@@ -80,14 +53,7 @@ class Settings {
 		$value        = isset( $this->options[ $fieldName ] ) ? esc_attr( $this->options[ $fieldName ] ) : 'DESC';
 		$descSelected = $value === 'DESC' ? 'selected' : '';
 		$ascSelected  = $value === 'ASC' ? 'selected' : '';
-		echo "<select id='$fieldName' name='{$this->optionName}[$fieldName]}' />
-				<option {$descSelected} value='DESC'>
-					Сначала новые
-				</option>
-				<option {$ascSelected} value='ASC'>
-					Сначала старые
-				</option>
-			  </select>";
+		require 'template-parts/fields/order.php';
 	}
 
 }
