@@ -19,7 +19,7 @@ class Settings {
 	}
 
 	function content() {
-		$apiPost  = new ApiPost();
+		$apiPost  = new ApiPost( $this->options );
 		$apiPosts = json_decode( $apiPost->getPosts(), true );
 		?>
 		<h2>Настройки ленты новостей</h2>
@@ -72,7 +72,7 @@ class Settings {
 	function newsCount() {
 		$fieldName = 'newsCount';
 		$value     = isset( $this->options[ $fieldName ] ) ? esc_attr( $this->options[ $fieldName ] ) : 20;
-		echo "<input id='$fieldName' name='{$this->optionName}[$fieldName]' type='text' value='$value' />";
+		echo "<input id='$fieldName' name='{$this->optionName}[$fieldName]' type='number' min='1' value='$value' />";
 	}
 
 	function newsOrder() {
